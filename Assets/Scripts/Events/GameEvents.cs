@@ -38,6 +38,11 @@ namespace Carpocalypse
         // Pickup Events
         public static event Action<GameObject> OnPickupCollected;
 
+        // Pedestrian Events
+        public static event Action<GameObject> OnPedestrianSpawned;
+        public static event Action<GameObject, int> OnPedestrianKilled; // pedestrian, scoreValue
+        public static event Action<int> OnPedestrianCountChanged; // current count
+
         // Trigger methods
         public static void TriggerGameStart() => OnGameStart?.Invoke();
         public static void TriggerGameOver() => OnGameOver?.Invoke();
@@ -62,6 +67,10 @@ namespace Carpocalypse
 
         public static void TriggerPickupCollected(GameObject pickup) => OnPickupCollected?.Invoke(pickup);
 
+        public static void TriggerPedestrianSpawned(GameObject pedestrian) => OnPedestrianSpawned?.Invoke(pedestrian);
+        public static void TriggerPedestrianKilled(GameObject pedestrian, int scoreValue) => OnPedestrianKilled?.Invoke(pedestrian, scoreValue);
+        public static void TriggerPedestrianCountChanged(int count) => OnPedestrianCountChanged?.Invoke(count);
+
         /// <summary>
         /// Clear all event subscriptions. Call when reloading scenes.
         /// </summary>
@@ -84,6 +93,9 @@ namespace Carpocalypse
             OnWeaponPickedUp = null;
             OnAmmoChanged = null;
             OnPickupCollected = null;
+            OnPedestrianSpawned = null;
+            OnPedestrianKilled = null;
+            OnPedestrianCountChanged = null;
         }
     }
 }
