@@ -119,6 +119,60 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &99432850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 99432851}
+  - component: {fileID: 99432852}
+  m_Layer: 0
+  m_Name: Pedestrians
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &99432851
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99432850}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 926269629}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &99432852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99432850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b006631413124ff8976b4110c51c20d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Carpocalypse.PedestrianSpawner
+  pedestrianTypes:
+  - {fileID: 11400000, guid: 2a9267d5081e34fb2aef0822ddbc7402, type: 2}
+  - {fileID: 11400000, guid: e8c4f3dcd96e34c51a670ca00484dba9, type: 2}
+  - {fileID: 11400000, guid: c90fd42d8f27340a88d668b6e28afa85, type: 2}
+  maxPedestrians: 20
+  spawnInterval: 2
+  spawnRadius: 30
+  minDistanceFromPlayer: 10
+  armedChance: 0.2
+  currentCount: 0
 --- !u!1 &112376532
 GameObject:
   m_ObjectHideFlags: 0
@@ -1366,6 +1420,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 99432851}
   - {fileID: 969544325}
   - {fileID: 375603166}
   - {fileID: 1018311770}
@@ -1539,8 +1594,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc46259f4b2c24381aba13bc735fbe9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 100
-  currentHealth: 0
+  _maxHealth: 100
+  _currentHealth: 0
   isPlayer: 1
   scoreValue: 100
   onDeath:
@@ -1800,6 +1855,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   score: 0
   isGameOver: 0
+  isPaused: 0
   playerPrefab: {fileID: 0}
   playerSpawnPoint: {fileID: 0}
 --- !u!4 &1227824800

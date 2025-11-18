@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf016c7444384af9bd80a91a2c1d40e, type: 3}
+  m_Name: Civilian
+  m_EditorClassIdentifier: Assembly-CSharp::Carpocalypse.PedestrianData
+  pedestrianName: Civilian
+  prefab: {fileID: 8417680216816235804, guid: 01991aa2ca1f84e129bdfa9f545d1a7e, type: 3}
+  maxHealth: 10
+  walkSpeed: 2
+  runSpeed: 6
+  defaultBehavior: 1
+  detectionRange: 15
+  fleeDistance: 20
+  wanderRadius: 8
+  wanderInterval: 3
+  isArmed: 0
+  damage: 5
+  attackRange: 8
+  fireRate: 1
+  bulletSpeed: 12
+  scoreValue: 0
+  penaltyValue: -50
+  healthDropChance: 0.05
+  ammoDropChance: 0.1
+  color: {r: 0.2, g: 0.6, b: 1, a: 1}

@@ -3,7 +3,7 @@
 ## Project Overview
 A Unity car combat game with vehicle physics, weapons, and enemy AI.
 
-**Current Progress: ~25%**
+**Current Progress: ~35%**
 
 ---
 
@@ -18,21 +18,33 @@ A Unity car combat game with vehicle physics, weapons, and enemy AI.
 - [x] Basic enemy AI (chase + contact damage)
 - [x] Game manager singleton
 - [x] Enemy and bullet prefabs
+- [x] Namespace organization (Carpocalypse)
+- [x] Interface-based architecture (IDamageable, IPoolable, IPickup)
+- [x] Event-driven systems (GameEvents hub)
+- [x] Data-driven design (ScriptableObjects for weapons, vehicles, enemies)
 
 ---
 
 ## Phase 2: Combat System Refinement (IN PROGRESS)
 
 ### Weapons
-- [ ] Connect WeaponSystem to VehicleController
-- [ ] Remove duplicate shooting code from VehicleController
-- [ ] Create WeaponData assets:
-  - [ ] Machine Gun (fast fire, low damage)
-  - [ ] Cannon (slow fire, high damage)
-  - [ ] Shotgun (spread shot)
+- [x] Connect WeaponSystem to VehicleController
+- [x] Remove duplicate shooting code from VehicleController
+- [x] Create WeaponData assets:
+  - [x] Machine Gun (fast fire, low damage)
+  - [x] Cannon (slow fire, high damage)
+  - [x] Shotgun (spread shot)
 - [ ] Create weapon pickup prefabs
 - [ ] Add ammo UI display
 - [ ] Weapon switching UI indicator
+
+### Pedestrians (COMPLETE)
+- [x] PedestrianData ScriptableObject
+- [x] PedestrianAI with behavior states (Wander, Flee, Aggressive, Neutral)
+- [x] PedestrianSpawner system
+- [x] Armed/unarmed variants
+- [x] Default types: Civilian (flees), Bandit (armed), Survivor (wanders)
+- [x] Editor tool: Carpocalypse > Create Default Pedestrians
 
 ### Enemy Improvements
 - [ ] Enemy spawner system (wave-based)
@@ -327,9 +339,9 @@ A Unity car combat game with vehicle physics, weapons, and enemy AI.
 ## Known Issues
 
 1. ~~`CameralFollow.cs` typo in filename~~ FIXED
-2. Duplicate shooting code in VehicleController and WeaponSystem
-3. WeaponData ScriptableObject stores runtime ammo (persists in editor)
-4. UIManager updates every frame (should use events)
+2. ~~Duplicate shooting code in VehicleController and WeaponSystem~~ FIXED
+3. ~~WeaponData ScriptableObject stores runtime ammo (persists in editor)~~ FIXED
+4. ~~UIManager updates every frame (should use events)~~ FIXED
 5. No arena boundaries (can drive off edge)
 6. InputSystem asset exists but unused (using legacy Input)
 
@@ -337,37 +349,38 @@ A Unity car combat game with vehicle physics, weapons, and enemy AI.
 
 ## Technical Debt
 
-- [ ] Consolidate shooting logic into WeaponSystem only
-- [ ] Create runtime weapon instance to track ammo
-- [ ] Switch UIManager to event-driven updates
+- [x] Consolidate shooting logic into WeaponSystem only
+- [x] Create runtime weapon instance to track ammo
+- [x] Switch UIManager to event-driven updates
 - [ ] Migrate to new Input System
-- [ ] Add error handling and null checks
+- [x] Add error handling and null checks
 
 ---
 
 ## Scalable Architecture Patterns (Priority)
 
 ### Interface-Based Systems
-- [ ] IDamageable interface (for health/damage)
+- [x] IDamageable interface (for health/damage)
 - [ ] IWeapon interface (for all weapon types)
 - [ ] IVehicle interface (for vehicle stats/abilities)
-- [ ] IPickup interface (for all pickups)
-- [ ] IPoolable interface (for object pooling)
+- [x] IPickup interface (for all pickups)
+- [x] IPoolable interface (for object pooling)
 - [ ] ISpawnable interface (for spawn system)
 
 ### Event-Driven Architecture
-- [ ] GameEvents static class (central event hub)
+- [x] GameEvents static class (central event hub)
 - [ ] Event channels (ScriptableObject-based events)
-- [ ] Decouple UI from game logic via events
+- [x] Decouple UI from game logic via events
 - [ ] Decouple audio from game logic via events
 - [ ] Achievement system via event listeners
 
 ### Data-Driven Design
-- [ ] VehicleData ScriptableObject
-- [ ] EnemyData ScriptableObject
-- [ ] WeaponData ScriptableObject (exists, needs expansion)
+- [x] VehicleData ScriptableObject
+- [x] EnemyData ScriptableObject
+- [x] WeaponData ScriptableObject
+- [x] PedestrianData ScriptableObject
 - [ ] BiomeData ScriptableObject
-- [ ] WaveData ScriptableObject
+- [x] WaveData ScriptableObject
 - [ ] UpgradeData ScriptableObject
 - [ ] External balance config (JSON import)
 - [ ] Remote config support (for live tuning)
