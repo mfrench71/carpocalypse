@@ -10,6 +10,13 @@ namespace Carpocalypse
         public bool isPlayerBullet = true; // Track who fired this bullet
 
         private float spawnTime;
+        private Collider bulletCollider;
+        private GameObject shooter;
+
+        void Awake()
+        {
+            bulletCollider = GetComponent<Collider>();
+        }
 
         void OnEnable()
         {
@@ -19,12 +26,45 @@ namespace Carpocalypse
         public void OnSpawnFromPool()
         {
             spawnTime = Time.time;
+            shooter = null;
         }
 
         public void OnReturnToPool()
         {
             // Reset state
             isPlayerBullet = true;
+            shooter = null;
+        }
+
+        // Call this after spawning to ignore collision with shooter
+        public void SetShooter(GameObject shooterObj)
+        {
+            shooter = shooterObj;
+
+            // Ignore collision with shooter
+            if (bulletCollider != null && shooterObj != null)
+            {
+                Collider shooterCollider = shooterObj.GetComponent<Collider>();
+                if (shooterCollider != null)
+                {
+                    Physics.IgnoreCollision(bulletCollider, shooterCollider, true);
+
+                    // Re-enable collision after a short delay
+                    Invoke(nameof(ReenableShooterCollision), 0.1f);
+                }
+            }
+        }
+
+        void ReenableShooterCollision()
+        {
+            if (bulletCollider != null && shooter != null)
+            {
+                Collider shooterCollider = shooter.GetComponent<Collider>();
+                if (shooterCollider != null)
+                {
+                    Physics.IgnoreCollision(bulletCollider, shooterCollider, false);
+                }
+            }
         }
 
         void Update()

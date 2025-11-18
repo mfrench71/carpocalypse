@@ -123,6 +123,7 @@ namespace Carpocalypse
                         bulletScript.speed = CurrentWeapon.bulletSpeed;
                         bulletScript.lifetime = CurrentWeapon.bulletLifetime;
                         bulletScript.isPlayerBullet = true; // Player fired this
+                        bulletScript.SetShooter(gameObject); // Ignore collision with player
                     }
 
                     // Set bullet color and scale

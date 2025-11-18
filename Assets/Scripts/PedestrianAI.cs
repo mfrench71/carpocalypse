@@ -223,6 +223,7 @@ namespace Carpocalypse
                     bulletScript.speed = pedestrianData.bulletSpeed;
                     bulletScript.lifetime = 2f;
                     bulletScript.isPlayerBullet = false; // This is an enemy bullet
+                    bulletScript.SetShooter(gameObject); // Ignore collision with self
                 }
 
                 // Make bullet red for enemy bullets
