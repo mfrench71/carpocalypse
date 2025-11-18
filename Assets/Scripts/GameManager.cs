@@ -1,64 +1,62 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+namespace Carpocalypse
 {
-    public static GameManager Instance { get; private set; }
-
-    [Header("Game State")]
-    public int score = 0;
-    public bool isGameOver = false;
-
-    [Header("References")]
-    public GameObject playerPrefab;
-    public Transform playerSpawnPoint;
-
-    private GameObject currentPlayer;
-
-    void Awake()
+    public class GameManager : MonoBehaviour
     {
-        // Singleton pattern - only one GameManager exists
-        if (Instance == null)
+        public static GameManager Instance { get; private set; }
+
+        [Header("Game State")]
+        public int score = 0;
+        public bool isGameOver = false;
+
+        [Header("References")]
+        public GameObject playerPrefab;
+        public Transform playerSpawnPoint;
+
+        void Awake()
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            // Singleton pattern
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else if (Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
         }
-        else
+
+        void Start()
         {
-            Destroy(gameObject);
+            StartGame();
         }
-    }
 
-    void Start()
-    {
-        StartGame();
-    }
+        public void StartGame()
+        {
+            score = 0;
+            isGameOver = false;
+        }
 
-    public void StartGame()
-    {
-        score = 0;
-        isGameOver = false;
+        public void AddScore(int points)
+        {
+            if (isGameOver) return;
+            score += points;
+        }
 
-        // We'll implement player spawning later
-        Debug.Log("Game Started!");
-    }
+        public void GameOver()
+        {
+            if (isGameOver) return;
+            isGameOver = true;
+        }
 
-    public void AddScore(int points)
-    {
-        score += points;
-        Debug.Log("Score: " + score);
-    }
-
-    public void GameOver()
-    {
-        isGameOver = true;
-        Debug.Log("Game Over! Final Score: " + score);
-    }
-
-    public void RestartGame()
-    {
-        // Reload the current scene
-        UnityEngine.SceneManagement.SceneManager.LoadScene(
-            UnityEngine.SceneManagement.SceneManager.GetActiveScene().name
-        );
+        public void RestartGame()
+        {
+            // Reset singleton before reload
+            Instance = null;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }

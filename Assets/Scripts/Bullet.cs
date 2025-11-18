@@ -1,47 +1,44 @@
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+namespace Carpocalypse
 {
-    public float speed = 20f;
-    public float lifetime = 3f;
-    public int damage = 1;
-
-    private float spawnTime;
-
-    void OnEnable()
+    public class Bullet : MonoBehaviour
     {
-        // Called when bullet is spawned from pool
-        spawnTime = Time.time;
-    }
+        public float speed = 20f;
+        public float lifetime = 3f;
+        public int damage = 1;
 
-    void Update()
-    {
-        // Move bullet forward
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        private float spawnTime;
 
-        // Deactivate after lifetime expires
-        if (Time.time - spawnTime >= lifetime)
+        void OnEnable()
         {
-            gameObject.SetActive(false);
+            // Called when bullet is spawned from pool
+            spawnTime = Time.time;
         }
-    }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        // Check if we hit an enemy
-        EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
-        if (enemy != null)
+        void Update()
         {
-            enemy.TakeDamage(damage);
+            // Move bullet forward
+            transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
-            // Add score when hitting enemy
-            if (GameManager.Instance != null)
+            // Deactivate after lifetime expires
+            if (Time.time - spawnTime >= lifetime)
             {
-                GameManager.Instance.AddScore(10);
+                gameObject.SetActive(false);
             }
         }
 
-        // Deactivate bullet when it hits something
-        gameObject.SetActive(false);
+        void OnCollisionEnter(Collision collision)
+        {
+            // Try to damage anything with a Health component (not just enemies)
+            Health health = collision.gameObject.GetComponent<Health>();
+            if (health != null && !health.isPlayer)
+            {
+                health.TakeDamage(damage);
+            }
+
+            // Deactivate bullet when it hits something
+            gameObject.SetActive(false);
+        }
     }
 }
