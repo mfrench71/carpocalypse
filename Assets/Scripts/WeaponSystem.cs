@@ -25,7 +25,7 @@ namespace Carpocalypse
             {
                 GameObject fp = new GameObject("FirePoint");
                 fp.transform.parent = transform;
-                fp.transform.localPosition = new Vector3(0f, 0f, 1f);
+                fp.transform.localPosition = new Vector3(0f, 0.5f, 1f); // Raised Y to 0.5
                 firePoint = fp.transform;
             }
 
