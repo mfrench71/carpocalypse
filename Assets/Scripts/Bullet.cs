@@ -81,6 +81,12 @@ namespace Carpocalypse
 
         void OnCollisionEnter(Collision collision)
         {
+            // Ignore other bullets
+            if (collision.gameObject.GetComponent<Bullet>() != null)
+            {
+                return;
+            }
+
             Debug.Log("Bullet hit: " + collision.gameObject.name + " (isPlayerBullet: " + isPlayerBullet + ")");
 
             // Try to damage anything with IDamageable interface
