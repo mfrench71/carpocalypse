@@ -2393,7 +2393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectPool
   pools:
   - tag: Bullet
-    prefab: {fileID: 8171987773109396000, guid: 40f0a3da64cf54b33aa2b9e58566e42a, type: 3}
+    prefab: {fileID: 4494588964110229636, guid: 40f0a3da64cf54b33aa2b9e58566e42a, type: 3}
     size: 50
 --- !u!114 &1227824799
 MonoBehaviour:

@@ -119,28 +119,38 @@ namespace Carpocalypse
                 // Spawn bullet from pool
                 GameObject bullet = ObjectPool.Instance.SpawnFromPool("Bullet", firePoint.position, rotation);
 
-                if (bullet != null)
+                if (bullet == null)
                 {
-                    // Configure bullet
-                    Bullet bulletScript = bullet.GetComponent<Bullet>();
-                    if (bulletScript != null)
-                    {
-                        bulletScript.damage = CurrentWeapon.damage;
-                        bulletScript.speed = CurrentWeapon.bulletSpeed;
-                        bulletScript.lifetime = CurrentWeapon.bulletLifetime;
-                        bulletScript.isPlayerBullet = true; // Player fired this
-                        bulletScript.SetShooter(gameObject); // Ignore collision with player
-                    }
-
-                    // Set bullet color and scale
-                    Renderer renderer = bullet.GetComponent<Renderer>();
-                    if (renderer != null && renderer.material != null)
-                    {
-                        renderer.material.color = CurrentWeapon.bulletColor;
-                    }
-
-                    bullet.transform.localScale = Vector3.one * CurrentWeapon.bulletScale;
+                    Debug.LogError("WeaponSystem: Failed to spawn bullet from pool!");
+                    continue;
                 }
+
+                Debug.Log("WeaponSystem: Spawned bullet at " + firePoint.position);
+
+                // Configure bullet
+                Bullet bulletScript = bullet.GetComponent<Bullet>();
+                if (bulletScript != null)
+                {
+                    bulletScript.damage = CurrentWeapon.damage;
+                    bulletScript.speed = CurrentWeapon.bulletSpeed;
+                    bulletScript.lifetime = CurrentWeapon.bulletLifetime;
+                    bulletScript.isPlayerBullet = true; // Player fired this
+                    bulletScript.SetShooter(gameObject); // Ignore collision with player
+                    Debug.Log("WeaponSystem: Configured bullet - speed: " + bulletScript.speed + ", lifetime: " + bulletScript.lifetime);
+                }
+                else
+                {
+                    Debug.LogError("WeaponSystem: Bullet has no Bullet script! Prefab may have missing script.");
+                }
+
+                // Set bullet color and scale
+                Renderer renderer = bullet.GetComponent<Renderer>();
+                if (renderer != null && renderer.material != null)
+                {
+                    renderer.material.color = CurrentWeapon.bulletColor;
+                }
+
+                bullet.transform.localScale = Vector3.one * CurrentWeapon.bulletScale;
             }
         }
 
