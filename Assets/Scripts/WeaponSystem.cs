@@ -50,6 +50,12 @@ namespace Carpocalypse
                 return;
             }
 
+            // Check for game over state
+            if (GameManager.Instance != null && GameManager.Instance.isGameOver)
+            {
+                return; // Don't shoot during game over
+            }
+
             // Shooting
             if (Input.GetKey(KeyCode.Space) && Time.time >= nextFireTime)
             {
@@ -62,6 +68,10 @@ namespace Carpocalypse
                     {
                         ammoInventory[CurrentWeapon]--;
                     }
+                }
+                else
+                {
+                    Debug.Log("WeaponSystem: Cannot shoot - CanShoot() returned false. Ammo: " + GetCurrentAmmo());
                 }
             }
 
