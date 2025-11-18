@@ -1561,7 +1561,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e81d8d0ea6b41ff9e0100c36df6ab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Carpocalypse.WeaponSystem
-  availableWeapons: []
+  availableWeapons:
+  - {fileID: 11400000, guid: 9243bdc518ac84c239f0c0316280f092, type: 2}
+  - {fileID: 11400000, guid: 4cab295a8a4b24c7b84cd130b3f5b962, type: 2}
+  - {fileID: 11400000, guid: 94ab270db7fc74f0fb1bd1d8c8079970, type: 2}
   firePoint: {fileID: 0}
   currentWeaponIndex: 0
 --- !u!4 &1018311770 stripped

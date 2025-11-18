@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Carpocalypse
 {
-    public class Bullet : MonoBehaviour
+    public class Bullet : MonoBehaviour, IPoolable
     {
         public float speed = 20f;
         public float lifetime = 3f;
@@ -12,8 +12,17 @@ namespace Carpocalypse
 
         void OnEnable()
         {
-            // Called when bullet is spawned from pool
+            OnSpawnFromPool();
+        }
+
+        public void OnSpawnFromPool()
+        {
             spawnTime = Time.time;
+        }
+
+        public void OnReturnToPool()
+        {
+            // Reset any state if needed
         }
 
         void Update()
@@ -30,11 +39,16 @@ namespace Carpocalypse
 
         void OnCollisionEnter(Collision collision)
         {
-            // Try to damage anything with a Health component (not just enemies)
-            Health health = collision.gameObject.GetComponent<Health>();
-            if (health != null && !health.isPlayer)
+            // Try to damage anything with IDamageable interface
+            IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+            if (damageable != null)
             {
-                health.TakeDamage(damage);
+                // Don't damage player (check Health component for isPlayer flag)
+                Health health = collision.gameObject.GetComponent<Health>();
+                if (health == null || !health.isPlayer)
+                {
+                    damageable.TakeDamage(damage);
+                }
             }
 
             // Deactivate bullet when it hits something

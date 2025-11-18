@@ -3,11 +3,11 @@ using UnityEngine.Events;
 
 namespace Carpocalypse
 {
-    public class Health : MonoBehaviour
+    public class Health : MonoBehaviour, IDamageable
     {
         [Header("Health Settings")]
-        public int maxHealth = 100;
-        public int currentHealth;
+        [SerializeField] private int _maxHealth = 100;
+        [SerializeField] private int _currentHealth;
         public bool isPlayer = false;
 
         [Header("Score")]
@@ -17,20 +17,38 @@ namespace Carpocalypse
         public UnityEvent onDeath;
         public UnityEvent<int> onHealthChanged;
 
+        // IDamageable implementation
+        public int CurrentHealth => _currentHealth;
+        public int MaxHealth => _maxHealth;
+        public bool IsAlive => _currentHealth > 0;
+
         void Start()
         {
-            currentHealth = maxHealth;
+            _currentHealth = _maxHealth;
+
+            // Fire initial health event for player
+            if (isPlayer)
+            {
+                GameEvents.TriggerPlayerHealthChanged(_currentHealth, _maxHealth);
+            }
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(int amount)
         {
-            currentHealth -= damage;
-            currentHealth = Mathf.Max(currentHealth, 0);
+            if (!IsAlive) return;
 
-            // Invoke health changed event
-            onHealthChanged?.Invoke(currentHealth);
+            _currentHealth -= amount;
+            _currentHealth = Mathf.Max(_currentHealth, 0);
 
-            if (currentHealth <= 0)
+            // Invoke events
+            onHealthChanged?.Invoke(_currentHealth);
+
+            if (isPlayer)
+            {
+                GameEvents.TriggerPlayerHealthChanged(_currentHealth, _maxHealth);
+            }
+
+            if (_currentHealth <= 0)
             {
                 Die();
             }
@@ -38,10 +56,15 @@ namespace Carpocalypse
 
         public void Heal(int amount)
         {
-            currentHealth += amount;
-            currentHealth = Mathf.Min(currentHealth, maxHealth);
+            _currentHealth += amount;
+            _currentHealth = Mathf.Min(_currentHealth, _maxHealth);
 
-            onHealthChanged?.Invoke(currentHealth);
+            onHealthChanged?.Invoke(_currentHealth);
+
+            if (isPlayer)
+            {
+                GameEvents.TriggerPlayerHealthChanged(_currentHealth, _maxHealth);
+            }
         }
 
         void Die()
@@ -50,7 +73,7 @@ namespace Carpocalypse
 
             if (isPlayer)
             {
-                // Player died - trigger game over
+                GameEvents.TriggerPlayerDeath();
                 if (GameManager.Instance != null)
                 {
                     GameManager.Instance.GameOver();
@@ -58,7 +81,7 @@ namespace Carpocalypse
             }
             else
             {
-                // Enemy died - add score and destroy
+                GameEvents.TriggerEnemyKilled(gameObject, scoreValue);
                 if (GameManager.Instance != null)
                 {
                     GameManager.Instance.AddScore(scoreValue);
@@ -69,8 +92,15 @@ namespace Carpocalypse
 
         public float GetHealthPercentage()
         {
-            if (maxHealth <= 0) return 0f;
-            return (float)currentHealth / (float)maxHealth;
+            if (_maxHealth <= 0) return 0f;
+            return (float)_currentHealth / (float)_maxHealth;
+        }
+
+        // Allow setting max health (useful for data-driven setup)
+        public void SetMaxHealth(int value)
+        {
+            _maxHealth = value;
+            _currentHealth = value;
         }
     }
 }

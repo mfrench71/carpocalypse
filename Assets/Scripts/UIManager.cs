@@ -14,9 +14,7 @@ namespace Carpocalypse
         public TextMeshProUGUI gameOverText;
         public GameObject gameOverPanel;
 
-        private Health playerHealth;
-        private int lastScore = -1;
-        private float lastHealthPercent = -1f;
+        private int currentScore = 0;
 
         void Awake()
         {
@@ -31,28 +29,38 @@ namespace Carpocalypse
             }
         }
 
+        void OnEnable()
+        {
+            // Subscribe to events
+            GameEvents.OnPlayerHealthChanged += UpdateHealthBar;
+            GameEvents.OnScoreChanged += UpdateScore;
+            GameEvents.OnGameOver += ShowGameOver;
+            GameEvents.OnGameStart += OnGameStart;
+        }
+
+        void OnDisable()
+        {
+            // Unsubscribe from events
+            GameEvents.OnPlayerHealthChanged -= UpdateHealthBar;
+            GameEvents.OnScoreChanged -= UpdateScore;
+            GameEvents.OnGameOver -= ShowGameOver;
+            GameEvents.OnGameStart -= OnGameStart;
+        }
+
         void Start()
         {
-            // Find player health component
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
-            {
-                playerHealth = player.GetComponent<Health>();
-            }
-
             // Hide game over panel at start
             if (gameOverPanel != null)
             {
                 gameOverPanel.SetActive(false);
             }
 
-            UpdateUI();
+            // Initialize score display
+            UpdateScore(0);
         }
 
         void Update()
         {
-            UpdateUI();
-
             // Handle restart input
             if (GameManager.Instance != null && GameManager.Instance.isGameOver)
             {
@@ -63,46 +71,41 @@ namespace Carpocalypse
             }
         }
 
-        void UpdateUI()
+        void OnGameStart()
         {
-            // Update health bar (only if changed)
-            if (healthBar != null && playerHealth != null)
+            if (gameOverPanel != null)
             {
-                float healthPercent = playerHealth.GetHealthPercentage();
-                if (healthPercent != lastHealthPercent)
-                {
-                    healthBar.value = healthPercent;
-                    lastHealthPercent = healthPercent;
-                }
+                gameOverPanel.SetActive(false);
             }
+        }
 
-            // Update score (only if changed)
-            if (scoreText != null && GameManager.Instance != null)
+        void UpdateHealthBar(int current, int max)
+        {
+            if (healthBar != null && max > 0)
             {
-                if (GameManager.Instance.score != lastScore)
-                {
-                    scoreText.text = "Score: " + GameManager.Instance.score;
-                    lastScore = GameManager.Instance.score;
-                }
+                healthBar.value = (float)current / (float)max;
             }
+        }
 
-            // Show game over
-            if (GameManager.Instance != null && GameManager.Instance.isGameOver)
+        void UpdateScore(int score)
+        {
+            currentScore = score;
+            if (scoreText != null)
             {
-                ShowGameOver();
+                scoreText.text = "Score: " + score;
             }
         }
 
         void ShowGameOver()
         {
-            if (gameOverPanel != null && !gameOverPanel.activeSelf)
+            if (gameOverPanel != null)
             {
                 gameOverPanel.SetActive(true);
             }
 
-            if (gameOverText != null && GameManager.Instance != null)
+            if (gameOverText != null)
             {
-                gameOverText.text = "GAME OVER\nFinal Score: " + GameManager.Instance.score + "\n\nPress R to Restart";
+                gameOverText.text = "GAME OVER\nFinal Score: " + currentScore + "\n\nPress R to Restart";
             }
         }
     }
