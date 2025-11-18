@@ -1386,6 +1386,7 @@ GameObject:
   - component: {fileID: 969544321}
   - component: {fileID: 969544326}
   - component: {fileID: 969544327}
+  - component: {fileID: 969544328}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1526,9 +1527,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VehicleController
   moveSpeed: 10
   rotationSpeed: 200
-  bulletPrefab: {fileID: 2131590280987772231, guid: 40f0a3da64cf54b33aa2b9e58566e42a, type: 3}
-  firePoint: {fileID: 0}
-  fireRate: 0.3
 --- !u!114 &969544327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1544,12 +1542,28 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   isPlayer: 1
+  scoreValue: 100
   onDeath:
     m_PersistentCalls:
       m_Calls: []
   onHealthChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &969544328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969544320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e81d8d0ea6b41ff9e0100c36df6ab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Carpocalypse.WeaponSystem
+  availableWeapons: []
+  firePoint: {fileID: 0}
+  currentWeaponIndex: 0
 --- !u!4 &1018311770 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3750258418703042412, guid: cc4bc4f234fa04d298ad8fc0ad7a09c8, type: 3}
