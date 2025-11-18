@@ -41,7 +41,14 @@ namespace Carpocalypse
 
         void Update()
         {
-            if (CurrentWeapon == null) return;
+            if (CurrentWeapon == null)
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    Debug.LogWarning("WeaponSystem: No weapon equipped! Add weapons to availableWeapons list.");
+                }
+                return;
+            }
 
             // Shooting
             if (Input.GetKey(KeyCode.Space) && Time.time >= nextFireTime)
@@ -115,6 +122,7 @@ namespace Carpocalypse
                         bulletScript.damage = CurrentWeapon.damage;
                         bulletScript.speed = CurrentWeapon.bulletSpeed;
                         bulletScript.lifetime = CurrentWeapon.bulletLifetime;
+                        bulletScript.isPlayerBullet = true; // Player fired this
                     }
 
                     // Set bullet color and scale

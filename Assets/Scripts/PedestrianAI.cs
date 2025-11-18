@@ -222,6 +222,7 @@ namespace Carpocalypse
                     bulletScript.damage = pedestrianData.damage;
                     bulletScript.speed = pedestrianData.bulletSpeed;
                     bulletScript.lifetime = 2f;
+                    bulletScript.isPlayerBullet = false; // This is an enemy bullet
                 }
 
                 // Make bullet red for enemy bullets

@@ -7,6 +7,7 @@ namespace Carpocalypse
         public float speed = 20f;
         public float lifetime = 3f;
         public int damage = 1;
+        public bool isPlayerBullet = true; // Track who fired this bullet
 
         private float spawnTime;
 
@@ -22,7 +23,8 @@ namespace Carpocalypse
 
         public void OnReturnToPool()
         {
-            // Reset any state if needed
+            // Reset state
+            isPlayerBullet = true;
         }
 
         void Update()
@@ -43,12 +45,26 @@ namespace Carpocalypse
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                // Don't damage player (check Health component for isPlayer flag)
                 Health health = collision.gameObject.GetComponent<Health>();
-                if (health == null || !health.isPlayer)
+
+                // Player bullets don't damage player, enemy bullets don't damage enemies
+                if (health != null)
                 {
-                    damageable.TakeDamage(damage);
+                    if (isPlayerBullet && health.isPlayer)
+                    {
+                        // Player bullet hit player - ignore
+                        gameObject.SetActive(false);
+                        return;
+                    }
+                    else if (!isPlayerBullet && !health.isPlayer)
+                    {
+                        // Enemy bullet hit enemy - ignore
+                        gameObject.SetActive(false);
+                        return;
+                    }
                 }
+
+                damageable.TakeDamage(damage);
             }
 
             // Deactivate bullet when it hits something
