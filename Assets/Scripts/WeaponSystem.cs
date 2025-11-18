@@ -91,12 +91,18 @@ namespace Carpocalypse
 
         private void Shoot()
         {
-            if (CurrentWeapon == null || firePoint == null) return;
-            if (ObjectPool.Instance == null)
+            if (CurrentWeapon == null || firePoint == null)
             {
-                Debug.LogError("ObjectPool.Instance is null!");
+                Debug.LogError("WeaponSystem.Shoot: CurrentWeapon or firePoint is null!");
                 return;
             }
+            if (ObjectPool.Instance == null)
+            {
+                Debug.LogError("WeaponSystem.Shoot: ObjectPool.Instance is null!");
+                return;
+            }
+
+            Debug.Log("WeaponSystem: Shooting " + CurrentWeapon.weaponName);
 
             // Shoot multiple bullets if spreadshot
             for (int i = 0; i < CurrentWeapon.bulletsPerShot; i++)

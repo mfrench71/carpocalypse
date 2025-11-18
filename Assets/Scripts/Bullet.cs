@@ -81,6 +81,8 @@ namespace Carpocalypse
 
         void OnCollisionEnter(Collision collision)
         {
+            Debug.Log("Bullet hit: " + collision.gameObject.name + " (isPlayerBullet: " + isPlayerBullet + ")");
+
             // Try to damage anything with IDamageable interface
             IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
             if (damageable != null)
@@ -93,17 +95,20 @@ namespace Carpocalypse
                     if (isPlayerBullet && health.isPlayer)
                     {
                         // Player bullet hit player - ignore
+                        Debug.Log("Player bullet hit player - ignoring");
                         gameObject.SetActive(false);
                         return;
                     }
                     else if (!isPlayerBullet && !health.isPlayer)
                     {
                         // Enemy bullet hit enemy - ignore
+                        Debug.Log("Enemy bullet hit enemy - ignoring");
                         gameObject.SetActive(false);
                         return;
                     }
                 }
 
+                Debug.Log("Bullet dealing " + damage + " damage to " + collision.gameObject.name);
                 damageable.TakeDamage(damage);
             }
 
